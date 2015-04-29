@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# $FreeBSD: head/etc/rc.d/kfd 270782 2014-08-29 07:51:47Z hrs $
+#
+
+# PROVIDE: kfd
+# REQUIRE: NETWORK
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=kfd
+rcvar=${name}_enable
+start_precmd=${name}_start_precmd
+
+kfd_start_precmd()
+{
+
+	command_args="$command_args -i &"
+}
+
+load_rc_config $name
+run_rc_command "$1"

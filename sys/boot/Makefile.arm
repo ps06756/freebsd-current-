@@ -1,0 +1,7 @@
+# $FreeBSD: head/sys/boot/Makefile.arm 281527 2015-04-14 14:15:14Z andrew $
+
+.if ${MK_FDT} != "no"
+SUBDIR+=		fdt
+.endif
+
+SUBDIR+=		efi uboot

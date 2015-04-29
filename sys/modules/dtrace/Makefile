@@ -1,0 +1,28 @@
+# $FreeBSD: head/sys/modules/dtrace/Makefile 278529 2015-02-10 19:41:30Z gnn $
+
+.include "Makefile.inc"
+
+SUBDIR=		dtmalloc	\
+		dtnfscl		\
+		dtrace		\
+		dtraceall	\
+		dtrace_test	\
+		lockstat	\
+		profile		\
+		prototype	\
+		sdt		\
+		systrace
+
+.if ${MACHINE_CPUARCH} == "amd64" || ${MACHINE_CPUARCH} == "i386"
+SUBDIR+=	fasttrap fbt systrace_linux32
+.endif
+.if ${MACHINE_CPUARCH} == "powerpc"
+SUBDIR+=	fbt fasttrap
+.endif
+.if ${MACHINE_CPUARCH} == "amd64" || ${MACHINE_ARCH} == "powerpc64"
+SUBDIR+=	systrace_freebsd32
+.endif
+.if ${MACHINE_CPUARCH} == "arm"
+SUBDIR+=	fbt
+.endif
+.include <bsd.subdir.mk>

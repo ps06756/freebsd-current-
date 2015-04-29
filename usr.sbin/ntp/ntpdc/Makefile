@@ -1,0 +1,37 @@
+# $FreeBSD: head/usr.sbin/ntp/ntpdc/Makefile 280849 2015-03-30 13:30:15Z cy $
+
+MAN=
+
+.include <src.opts.mk>
+.include <bsd.own.mk>
+
+.PATH: ${.CURDIR}/../../../contrib/ntp/ntpdc
+
+PROG=	ntpdc
+SRCS= 	ntpdc.c ntpdc_ops.c ntpdc-opts.c version.c
+
+CFLAGS+= -I${.CURDIR}/../../../contrib/ntp/include \
+	-I${.CURDIR}/../../../contrib/ntp/lib/isc/include \
+	-I${.CURDIR}/../../../contrib/ntp/lib/isc/unix/include \
+	-I${.CURDIR}/../../../contrib/ntp/lib/isc/pthreads/include \
+	-I${.CURDIR}/../../../contrib/ntp/sntp/libopts \
+	-I${.CURDIR}/../../../lib/libc/${MACHINE_ARCH} \
+	-I${.CURDIR}/../ -I${.CURDIR}
+
+LIBADD=	edit md ntp m readline opts ncurses pthread
+CFLAGS+=	-DHAVE_LIBEDIT -DHAVE_READLINE_READLINE_H \
+		-I${DESTDIR}/${INCLUDEDIR}/edit
+
+.if ${MK_OPENSSL} != "no"
+LIBADD+=	ssl crypto
+.endif
+
+CLEANFILES+= .version version.c
+
+version.c:
+	sh -e ${.CURDIR}/../scripts/mkver ntpdc
+
+afterinstall:
+	rm -f ${DESTDIR}/usr/sbin/xntpdc
+
+.include <bsd.prog.mk>

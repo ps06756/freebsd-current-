@@ -1,0 +1,22 @@
+# $FreeBSD: head/usr.bin/procstat/Makefile 279842 2015-03-10 09:41:48Z scottl $
+
+PROG=	procstat
+MAN=	procstat.1
+SRCS=	procstat.c		\
+	procstat_args.c		\
+	procstat_auxv.c		\
+	procstat_basic.c	\
+	procstat_bin.c		\
+	procstat_cred.c		\
+	procstat_cs.c		\
+	procstat_files.c	\
+	procstat_kstack.c	\
+	procstat_rlimit.c	\
+	procstat_rusage.c	\
+	procstat_sigs.c		\
+	procstat_threads.c	\
+	procstat_vm.c
+
+LIBADD+=	util procstat
+
+.include <bsd.prog.mk>

@@ -1,0 +1,28 @@
+# $FreeBSD: head/gnu/lib/libreadline/readline/Makefile 275077 2014-11-25 21:18:18Z bapt $
+
+LIB=    readline
+INTERNALLIB=	yes
+NO_MAN=	yes
+
+TILDESRC= tilde.c
+SRCS=     readline.c vi_mode.c funmap.c keymaps.c parens.c search.c \
+	  rltty.c complete.c bind.c isearch.c display.c signals.c \
+	  util.c kill.c undo.c macro.c input.c callback.c terminal.c \
+	  text.c nls.c misc.c compat.c xmalloc.c $(HISTSRC) $(TILDESRC)
+
+INSTALLED_HEADERS= readline.h chardefs.h keymaps.h history.h tilde.h \
+		   rlstdc.h rlconf.h rltypedefs.h
+
+CFLAGS+=	-I${.OBJDIR}/..
+SRCDIR=	${.CURDIR}/../../../../contrib/libreadline
+
+.for _h in ${INSTALLED_HEADERS}
+CLEANFILES+=	${_h}
+DPSRCS+=	${.OBJDIR}/${_h}
+${.OBJDIR}/${_h}:	${SRCDIR}/${_h}
+	${INSTALL} ${.ALLSRC} ${.TARGET}
+.endfor
+
+LIBADD=	ncursesw
+
+.include <bsd.lib.mk>
