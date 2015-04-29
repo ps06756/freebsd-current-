@@ -1,0 +1,21 @@
+# $FreeBSD: head/kerberos5/usr.bin/hxtool/Makefile 275022 2014-11-25 09:57:42Z bapt $
+
+PROG=	hxtool
+MAN=
+CFLAGS+=	-I${KRB5DIR}/lib/hx509 \
+		-I${KRB5DIR}/lib/asn1 \
+		-I${KRB5DIR}/lib/roken \
+		-I${KRB5DIR}/lib/sl -I.
+LIBADD=	hx509 roken asn1 crypto sl vers edit
+SRCS=	hxtool.c hxtool-commands.c hxtool-commands.h
+
+hxtool-commands.h: hxtool-commands.in
+	${SLC} ${.ALLSRC:M*.in}
+
+.for ext in c o
+hxtool-commands.${ext}: hxtool-commands.h
+.endfor
+
+.include <bsd.prog.mk>
+
+.PATH: ${KRB5DIR}/lib/hx509
