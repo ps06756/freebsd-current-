@@ -1,4 +1,4 @@
-# $FreeBSD: head/etc/mtree/BSD.tests.dist 279418 2015-02-28 23:30:06Z markj $
+# $FreeBSD: head/etc/mtree/BSD.tests.dist 282104 2015-04-27 17:53:09Z ngie $
 #
 # Please see the file src/etc/mtree/README before making changes to this file.
 #
@@ -354,7 +354,19 @@
         ..
     ..
     sys
+        aio
+        ..
+        fifo
+        ..
+        file
+        ..
         kern
+            execve
+            ..
+        ..
+        kqueue
+        ..
+        mqueue
         ..
         netinet
         ..
@@ -391,6 +403,8 @@
             ..
             unlink
             ..
+        ..
+        vm
         ..
     ..
     usr.bin

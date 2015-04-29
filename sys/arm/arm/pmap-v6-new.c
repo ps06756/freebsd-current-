@@ -70,7 +70,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/arm/arm/pmap-v6-new.c 281369 2015-04-10 13:26:35Z ian $");
+__FBSDID("$FreeBSD: head/sys/arm/arm/pmap-v6-new.c 282151 2015-04-28 16:47:34Z andrew $");
 
 /*
  *	Manages physical address maps.
@@ -6094,13 +6094,13 @@ pmap_set_pcb_pagedir(pmap_t pmap, struct pcb *pcb)
 
 
 /*
- *  Clean L1 data cache range on a single page, which is not mapped yet.
+ *  Clean L1 data cache range by physical address.
+ *  The range must be within a single page.
  */
 static void
 pmap_dcache_wb_pou(vm_paddr_t pa, vm_size_t size, vm_memattr_t ma)
 {
 	struct sysmaps *sysmaps;
-	vm_offset_t va;
 
 	KASSERT(((pa & PAGE_MASK) + size) <= PAGE_SIZE,
 	    ("%s: not on single page", __func__));
@@ -6111,9 +6111,8 @@ pmap_dcache_wb_pou(vm_paddr_t pa, vm_size_t size, vm_memattr_t ma)
 	if (*sysmaps->CMAP3)
 		panic("%s: CMAP3 busy", __func__);
 	pte2_store(sysmaps->CMAP3, PTE2_KERN_NG(pa, PTE2_AP_KRW, ma));
-	va = (vm_offset_t)sysmaps->CADDR3;
-	tlb_flush_local(va);
-	dcache_wb_pou(va, size);
+	tlb_flush_local((vm_offset_t)sysmaps->CADDR3);
+	dcache_wb_pou((vm_offset_t)sysmaps->CADDR3 + (pa & PAGE_MASK), size);
 	pte2_clear(sysmaps->CMAP3);
 	sched_unpin();
 	mtx_unlock(&sysmaps->lock);

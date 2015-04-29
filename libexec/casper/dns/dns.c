@@ -28,7 +28,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/libexec/casper/dns/dns.c 258838 2013-12-02 08:21:28Z pjd $");
+__FBSDID("$FreeBSD: head/libexec/casper/dns/dns.c 282101 2015-04-27 17:33:00Z oshogbo $");
 
 #include <netinet/in.h>
 
@@ -228,8 +228,10 @@ dns_getnameinfo(const nvlist_t *limits, const nvlist_t *nvlin, nvlist_t *nvlout)
 		goto out;
 	}
 
-	if (!dns_allowed_family(limits, (int)sast.ss_family))
-		return (NO_RECOVERY);
+	if (!dns_allowed_family(limits, (int)sast.ss_family)) {
+		error = NO_RECOVERY;
+		goto out;
+	}
 
 	flags = (int)nvlist_get_number(nvlin, "flags");
 

@@ -40,7 +40,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/arm64/arm64/nexus.c 281494 2015-04-13 14:43:10Z andrew $");
+__FBSDID("$FreeBSD: head/sys/arm64/arm64/nexus.c 282096 2015-04-27 15:16:51Z andrew $");
 
 #include <sys/param.h>
 #include <sys/systm.h>
@@ -208,12 +208,12 @@ nexus_alloc_resource(device_t bus, device_t child, int type, int *rid,
 		break;
 
 	default:
-		return (0);
+		return (NULL);
 	}
 
 	rv = rman_reserve_resource(rm, start, end, count, flags, child);
 	if (rv == 0)
-		return (0);
+		return (NULL);
 
 	rman_set_rid(rv, *rid);
 	rman_set_bushandle(rv, rman_get_start(rv));
@@ -221,7 +221,7 @@ nexus_alloc_resource(device_t bus, device_t child, int type, int *rid,
 	if (needactivate) {
 		if (bus_activate_resource(child, type, *rid, rv)) {
 			rman_release_resource(rv);
-			return (0);
+			return (NULL);
 		}
 	}
 

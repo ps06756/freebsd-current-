@@ -28,7 +28,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/dev/acpica/acpi.c 281747 2015-04-19 17:15:55Z adrian $");
+__FBSDID("$FreeBSD: head/sys/dev/acpica/acpi.c 282149 2015-04-28 16:06:58Z andrew $");
 
 #include "opt_acpi.h"
 #include <sys/param.h>
@@ -606,7 +606,7 @@ acpi_attach(device_t dev)
 	sc->acpi_handle_reboot = 1;
 
     /* Only enable S4BIOS by default if the FACS says it is available. */
-    if (AcpiGbl_FACS->Flags & ACPI_FACS_S4_BIOS_PRESENT)
+    if (AcpiGbl_FACS != NULL && AcpiGbl_FACS->Flags & ACPI_FACS_S4_BIOS_PRESENT)
 	sc->acpi_s4bios = 1;
 
     /* Probe all supported sleep states. */

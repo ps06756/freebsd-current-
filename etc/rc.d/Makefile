@@ -1,4 +1,4 @@
-# $FreeBSD: head/etc/rc.d/Makefile 279463 2015-03-01 00:58:23Z rstone $
+# $FreeBSD: head/etc/rc.d/Makefile 282059 2015-04-27 07:00:34Z ngie $
 
 .include <src.opts.mk>
 
@@ -261,6 +261,10 @@ FILES+=		routed
 
 .if ${MK_SENDMAIL} != "no"
 FILES+=		sendmail
+.endif
+
+.if ${MK_TESTS} != "no"
+SUBDIR+=	tests
 .endif
 
 .if ${MK_TIMED} != "no"

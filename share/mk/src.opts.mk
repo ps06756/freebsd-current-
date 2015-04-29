@@ -1,4 +1,4 @@
-# $FreeBSD: head/share/mk/src.opts.mk 281952 2015-04-24 22:04:59Z emaste $
+# $FreeBSD: head/share/mk/src.opts.mk 282198 2015-04-28 19:15:28Z ngie $
 #
 # Option file for FreeBSD /usr/src builds.
 #
@@ -233,7 +233,7 @@ __DEFAULT_YES_OPTIONS+=GCC GCC_BOOTSTRAP GNUCXX
 __DEFAULT_NO_OPTIONS+=CLANG CLANG_BOOTSTRAP CLANG_FULL CLANG_IS_CC
 .endif
 .if ${__T} == "aarch64"
-BROKEN_OPTIONS+=BINUTILS BINUTILS_BOOTSTRAP GDB
+BROKEN_OPTIONS+=BINUTILS BINUTILS_BOOTSTRAP GCC GCC_BOOTSTRAP GDB
 .endif
 # LLVM lacks support for FreeBSD 64-bit atomic operations for ARMv4/ARMv5
 .if ${__T} == "arm" || ${__T} == "armeb"

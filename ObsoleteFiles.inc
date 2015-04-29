@@ -1,5 +1,5 @@
 #
-# $FreeBSD: head/ObsoleteFiles.inc 281994 2015-04-26 07:52:43Z bapt $
+# $FreeBSD: head/ObsoleteFiles.inc 282105 2015-04-27 17:55:57Z ngie $
 #
 # This file lists old files (OLD_FILES), libraries (OLD_LIBS) and
 # directories (OLD_DIRS) which should get removed at an update. Recently
@@ -38,6 +38,8 @@
 #   xargs -n1 | sort | uniq -d;
 # done
 
+# 20150427: test/sys/kern/mmap_test moved to test/sys/vm/mmap_test
+OLD_FILES+=usr/tests/sys/kern/mmap_test
 # 20150418
 OLD_FILES+=sbin/mount_oldnfs
 OLD_FILES+=usr/share/man/man8/mount_oldnfs.8.gz

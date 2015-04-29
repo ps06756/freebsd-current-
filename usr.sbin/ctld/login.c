@@ -29,7 +29,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/usr.sbin/ctld/login.c 281532 2015-04-14 18:13:55Z delphij $");
+__FBSDID("$FreeBSD: head/usr.sbin/ctld/login.c 282086 2015-04-27 11:18:16Z trasz $");
 
 #include <assert.h>
 #include <stdbool.h>
@@ -800,9 +800,6 @@ login(struct connection *conn)
 	}
 	conn->conn_initiator_name = checked_strdup(initiator_name);
 	log_set_peer_name(conn->conn_initiator_name);
-	/*
-	 * XXX: This doesn't work (does nothing) because of Capsicum.
-	 */
 	setproctitle("%s (%s)", conn->conn_initiator_addr, conn->conn_initiator_name);
 
 	redirected = login_portal_redirect(conn, request);

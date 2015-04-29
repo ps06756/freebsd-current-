@@ -1,4 +1,4 @@
-# $FreeBSD: head/sys/conf/files 281855 2015-04-22 14:38:58Z rodrigc $
+# $FreeBSD: head/sys/conf/files 282153 2015-04-28 16:51:48Z andrew $
 #
 # The long compile-with and dependency lines are required because of
 # limitations in config: backslash-newline doesn't work in strings, and
@@ -584,7 +584,6 @@ dev/acpica/acpi_button.c	optional acpi
 dev/acpica/acpi_cmbat.c		optional acpi
 dev/acpica/acpi_cpu.c		optional acpi
 dev/acpica/acpi_ec.c		optional acpi
-dev/acpica/acpi_hpet.c		optional acpi
 dev/acpica/acpi_isab.c		optional acpi isa
 dev/acpica/acpi_lid.c		optional acpi
 dev/acpica/acpi_package.c	optional acpi

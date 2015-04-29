@@ -1,5 +1,5 @@
 #
-# $FreeBSD: head/Makefile 281629 2015-04-16 22:35:19Z emaste $
+# $FreeBSD: head/Makefile 282156 2015-04-28 17:13:05Z emaste $
 #
 # The user-driven targets are:
 #
@@ -36,7 +36,7 @@
 #                       specified with XDEV and XDEV_ARCH.
 # xdev-build          - Build cross-development tools.
 # xdev-install        - Install cross-development tools.
-# xdev-links          - Create traditional links in /usr/cross-freebsd/bin for cc, etc
+# xdev-links          - Create traditional links in /usr/bin for cc, etc
 # native-xtools       - Create host binaries that produce target objects
 #                       for use in qemu user-mode jails.
 # 
@@ -47,7 +47,7 @@
 # 	make universe -DMAKE_JUST_KERNELS JFLAG=-j${_jflag}
 #
 # This makefile is simple by design. The FreeBSD make automatically reads
-# the /usr/cross-freebsd/share/mk/sys.mk unless the -m argument is specified on the
+# the /usr/share/mk/sys.mk unless the -m argument is specified on the
 # command line. By keeping this makefile simple, it doesn't matter too
 # much how different the installed mk files are from those in the source
 # tree. This makefile executes a child make process, forcing it to use
@@ -56,21 +56,21 @@
 # Most of the user-driven targets (as listed above) are implemented in
 # Makefile.inc1.  The exceptions are universe, tinderbox and targets.
 #
-# If you want to build your system from source be sure that /usr/cross-freebsd/obj has
+# If you want to build your system from source be sure that /usr/obj has
 # at least 1GB of diskspace available.  A complete 'universe' build requires
 # about 15GB of space.
 #
 # For individuals wanting to build from the sources currently on their
 # system, the simple instructions are:
 #
-# 1.  `cd /usr/cross-freebsd/src'  (or to the directory containing your source tree).
+# 1.  `cd /usr/src'  (or to the directory containing your source tree).
 # 2.  Define `HISTORICAL_MAKE_WORLD' variable (see README).
 # 3.  `make world'
 #
 # For individuals wanting to upgrade their sources (even if only a
 # delta of a few days):
 #
-#  1.  `cd /usr/cross-freebsd/src'       (or to the directory containing your source tree).
+#  1.  `cd /usr/src'       (or to the directory containing your source tree).
 #  2.  `make buildworld'
 #  3.  `make buildkernel KERNCONF=YOUR_KERNEL_HERE'     (default is GENERIC).
 #  4.  `make installkernel KERNCONF=YOUR_KERNEL_HERE'   (default is GENERIC).
@@ -129,9 +129,9 @@ TGTS+=	${BITGTS}
 .ORDER: buildkernel reinstallkernel
 .ORDER: buildkernel reinstallkernel.debug
 
-PATH=	/sbin:/bin:/usr/cross-freebsd/sbin:/usr/cross-freebsd/bin
-MAKEOBJDIRPREFIX?=	/usr/cross-freebsd/obj
-_MAKEOBJDIRPREFIX!= /usr/cross-freebsd/bin/env -i PATH=${PATH} ${MAKE} \
+PATH=	/sbin:/bin:/usr/sbin:/usr/bin
+MAKEOBJDIRPREFIX?=	/usr/obj
+_MAKEOBJDIRPREFIX!= /usr/bin/env -i PATH=${PATH} ${MAKE} \
     ${.MAKEFLAGS:MMAKEOBJDIRPREFIX=*} __MAKE_CONF=${__MAKE_CONF} \
     -f /dev/null -V MAKEOBJDIRPREFIX dummy
 .if !empty(_MAKEOBJDIRPREFIX)
@@ -373,19 +373,19 @@ kernel-toolchains:
 # existing system is.
 #
 .if make(universe) || make(universe_kernels) || make(tinderbox) || make(targets)
-TARGETS?=amd64 arm i386 mips pc98 powerpc sparc64
 # XXX Add arm64 to universe only if we have an external binutils installed.
-# It does not build with the in-tree linnker.
-.if exists(/usr/cross-freebsd/local/aarch64-freebsd/bin/ld)
-TARGETS+=arm64
-TARGET_ARCHES_arm64?=	aarch64
-.else
+# It does not build with the in-tree linker.
+.if exists(/usr/local/aarch64-freebsd/bin/ld)
+UNIVERSE_arm64=arm64
+.elif empty(${TARGETS})
 universe: universe_arm64_skip
 universe_epilogue: universe_arm64_skip
 universe_arm64_skip: universe_prologue
 	@echo ">> arm64 skipped - install aarch64-binutils port or package to build"
 .endif
+TARGETS?=amd64 arm ${UNIVERSE_arm64} i386 mips pc98 powerpc sparc64
 TARGET_ARCHES_arm?=	arm armeb armv6 armv6hf
+TARGET_ARCHES_arm64?=	aarch64
 TARGET_ARCHES_mips?=	mipsel mips mips64el mips64 mipsn32
 TARGET_ARCHES_powerpc?=	powerpc powerpc64
 TARGET_ARCHES_pc98?=	i386
