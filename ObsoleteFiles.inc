@@ -1,5 +1,5 @@
 #
-# $FreeBSD: head/ObsoleteFiles.inc 282105 2015-04-27 17:55:57Z ngie $
+# $FreeBSD: head/ObsoleteFiles.inc 282255 2015-04-29 22:46:30Z sbruno $
 #
 # This file lists old files (OLD_FILES), libraries (OLD_LIBS) and
 # directories (OLD_DIRS) which should get removed at an update. Recently
@@ -38,6 +38,8 @@
 #   xargs -n1 | sort | uniq -d;
 # done
 
+# 20150429:
+OLD_FILES+=usr/share/docs/papers/hwpmc.ascii.gz
 # 20150427: test/sys/kern/mmap_test moved to test/sys/vm/mmap_test
 OLD_FILES+=usr/tests/sys/kern/mmap_test
 # 20150418
@@ -343,6 +345,10 @@ OLD_FILES+=usr/lib/debug/usr/lib32/i18n
 OLD_FILES+=usr/lib/debug/usr/lib32/private
 # 20141015: OpenSSL 1.0.1j import
 OLD_FILES+=usr/share/openssl/man/man3/CMS_sign_add1_signer.3.gz
+.if ${MK_GCC} == "no"
+# 20141009: gperf disabled by default
+OLD_FILES+=usr/bin/gperf
+.endif
 # 20140922: sleepq_calc_signal_retval.9 and sleepq_catch_signals.9 removed
 OLD_FILES+=usr/share/man/man9/sleepq_calc_signal_retval.9.gz
 OLD_FILES+=usr/share/man/man9/sleepq_catch_signals.9.gz

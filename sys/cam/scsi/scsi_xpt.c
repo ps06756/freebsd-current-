@@ -28,7 +28,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/cam/scsi/scsi_xpt.c 278228 2015-02-05 00:12:21Z ken $");
+__FBSDID("$FreeBSD: head/sys/cam/scsi/scsi_xpt.c 282239 2015-04-29 17:18:41Z scottl $");
 
 #include <sys/param.h>
 #include <sys/bus.h>

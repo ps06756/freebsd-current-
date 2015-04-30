@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first 
 # in NOTES.
 #
-# $FreeBSD: head/sys/powerpc/conf/GENERIC 276755 2015-01-06 16:15:57Z jhb $
+# $FreeBSD: head/sys/powerpc/conf/GENERIC 282264 2015-04-30 01:24:25Z jhibbits $
 
 cpu		AIM
 ident		GENERIC
@@ -32,6 +32,7 @@ options 	PSIM			#GDB PSIM ppc simulator
 options 	MAMBO			#IBM Mambo Full System Simulator
 options 	PSERIES			#PAPR-compliant systems
 
+options		FDT
 options 	SCHED_ULE		#ULE scheduler
 options 	PREEMPTION		#Enable kernel thread preemption
 options 	INET			#InterNETworking

@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: head/sys/i386/conf/GENERIC 279447 2015-03-01 00:40:09Z rstone $
+# $FreeBSD: head/sys/i386/conf/GENERIC 282212 2015-04-29 10:12:34Z whu $
 
 cpu		I486_CPU
 cpu		I586_CPU
@@ -358,7 +358,9 @@ device		virtio_blk		# VirtIO Block device
 device		virtio_scsi		# VirtIO SCSI device
 device		virtio_balloon		# VirtIO Memory Balloon device
 
-# HyperV drivers
+# HyperV drivers and enchancement support
+# NOTE: HYPERV depends on hyperv.  They must be added or removed together.
+options 	HYPERV			# Hyper-V kernel infrastructure
 device		hyperv			# HyperV drivers 
 
 # Xen HVM Guest Optimizations

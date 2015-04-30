@@ -35,7 +35,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/kern/kern_exit.c 280131 2015-03-16 01:09:49Z mjg $");
+__FBSDID("$FreeBSD: head/sys/kern/kern_exit.c 282213 2015-04-29 10:23:02Z trasz $");
 
 #include "opt_compat.h"
 #include "opt_ktrace.h"
@@ -907,9 +907,11 @@ proc_reap(struct thread *td, struct proc *p, int *status, int options)
 	 * Destroy resource accounting information associated with the process.
 	 */
 #ifdef RACCT
-	PROC_LOCK(p);
-	racct_sub(p, RACCT_NPROC, 1);
-	PROC_UNLOCK(p);
+	if (racct_enable) {
+		PROC_LOCK(p);
+		racct_sub(p, RACCT_NPROC, 1);
+		PROC_UNLOCK(p);
+	}
 #endif
 	racct_proc_exit(p);
 

@@ -25,7 +25,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: head/sys/dev/hyperv/storvsc/hv_vstorage.h 256276 2013-10-10 16:25:53Z dim $
+ * $FreeBSD: head/sys/dev/hyperv/storvsc/hv_vstorage.h 282212 2015-04-29 10:12:34Z whu $
  */
 
 #ifndef __HV_VSTORAGE_H__
@@ -53,7 +53,7 @@
  * V1 RC > 2008/1/31          2.0
  */
 
-#define VMSTOR_PROTOCOL_VERSION_CURRENT	VMSTOR_PROTOCOL_VERSION(2, 0)
+#define VMSTOR_PROTOCOL_VERSION_CURRENT	VMSTOR_PROTOCOL_VERSION(5, 1)
 
 /**
  *  Packet structure ops describing virtual storage requests.
@@ -69,7 +69,10 @@ enum vstor_packet_ops {
 	VSTOR_OPERATION_ENDINITIALIZATION     = 8,
 	VSTOR_OPERATION_QUERYPROTOCOLVERSION  = 9,
 	VSTOR_OPERATION_QUERYPROPERTIES       = 10,
-	VSTOR_OPERATION_MAXIMUM               = 10
+	VSTOR_OPERATION_ENUMERATE_BUS         = 11,
+	VSTOR_OPERATION_FCHBA_DATA            = 12,
+	VSTOR_OPERATION_CREATE_MULTI_CHANNELS = 13,
+	VSTOR_OPERATION_MAXIMUM               = 13
 };
 
 
@@ -123,10 +126,12 @@ struct vmstor_chan_props {
 	uint8_t  path_id;
 	uint8_t  target_id;
 
+	uint16_t max_channel_cnt;
+
 	/**
 	 * Note: port number is only really known on the client side
 	 */
-	uint32_t port;
+	uint16_t port;
 	uint32_t flags;
 	uint32_t max_transfer_bytes;
 
@@ -193,6 +198,11 @@ struct vstor_packet {
 	     * Used during version negotiations.
 	     */
 	    struct vmstor_proto_ver version;
+
+	    /**
+             * Number of multichannels to create
+	     */
+	    uint16_t multi_channels_cnt;
 	} u;
 
 } __packed;

@@ -31,7 +31,7 @@ NOTE TO PEOPLE WHO THINK THAT FreeBSD 11.x IS SLOW:
 	disable the most expensive debugging functionality run
 	"ln -s 'abort:false,junk:false' /etc/malloc.conf".)
 
-20150523:
+20150423:
 	chmod, chflags, chown and chgrp now affect symlinks in -R mode as
 	defined in symlink(7); previously symlinks were silently ignored.
 
@@ -1183,4 +1183,4 @@ POSSIBILITY OF SUCH DAMAGE.
 Contact Warner Losh if you have any questions about your use of
 this document.
 
-$FreeBSD: head/UPDATING 282208 2015-04-29 00:49:00Z smh $
+$FreeBSD: head/UPDATING 282220 2015-04-29 14:17:40Z smh $

@@ -59,7 +59,7 @@
  ******************************************************/
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/siftr.c 280441 2015-03-24 15:08:43Z lstewart $");
+__FBSDID("$FreeBSD: head/sys/netinet/siftr.c 282240 2015-04-29 17:19:55Z gnn $");
 
 #include <sys/param.h>
 #include <sys/alq.h>
@@ -75,6 +75,7 @@ __FBSDID("$FreeBSD: head/sys/netinet/siftr.c 280441 2015-03-24 15:08:43Z lstewar
 #include <sys/pcpu.h>
 #include <sys/proc.h>
 #include <sys/sbuf.h>
+#include <sys/sdt.h>
 #include <sys/smp.h>
 #include <sys/socket.h>
 #include <sys/socketvar.h>
@@ -86,6 +87,7 @@ __FBSDID("$FreeBSD: head/sys/netinet/siftr.c 280441 2015-03-24 15:08:43Z lstewar
 #include <net/pfil.h>
 
 #include <netinet/in.h>
+#include <netinet/in_kdtrace.h>
 #include <netinet/in_pcb.h>
 #include <netinet/in_systm.h>
 #include <netinet/in_var.h>
@@ -547,6 +549,7 @@ siftr_process_pkt(struct pkt_node * pkt_node)
 	}
 #endif
 
+	TCP_PROBE1(siftr, pkt_node);
 	alq_post_flags(siftr_alq, log_buf, 0);
 }
 
