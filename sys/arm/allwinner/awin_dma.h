@@ -10,10 +10,11 @@
 #define DMA (0x01C02000) 
 
 
-/* These are macros of Normal DMA. */ 
 #define DMA_IRQ_EN_REG (0x0000) 
 #define DMA_IRQ_PEND_STA_REG (0x0004)
-#define NDMA_CTRL_REG(n) (0x100 + ((n)*0x20))
+
+/* These are macros of Normal DMA. */ 
+#define NDMA_CFG_REG(n) (0x100 + ((n)*0x20))
 #define NDMA_SRC_ADDR_REG(n) (0x100 + ((n)*0x20) + 4)
 #define NDMA_DEST_ADDR_REG(n) (0x100 + ((n)*0x20) + 8)
 #define NDMA_BC_REG(n) (0x100 + ((n)*0x20) + 0x0C ) 

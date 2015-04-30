@@ -47,6 +47,8 @@ struct a10_dma_channel {
 	uint32_t a10_dma_busaddr ; 
 	enum a10_dma_channel_type a10_dma_channel_type ; 
 	uint8_t in_use ; 
+	void (*intr_hand)(void*) ;
+	void* arg ;
 } ; 
 
 struct a10_dma_controller { 
@@ -67,6 +69,9 @@ static int a10_dma_detach(device_t) ;
 static void a10_dma_release_resources(device_t) ; 
 
 static void a10_dma_intr(void*) ; 
+
+void a10_dma_set_config(uint8_t type, uint8_t ch_no, uint32_t cfg) ;
+uint32_t a10_dma_get_config(uint8_t type, uint8_t ch_no) ;
 
 /* Currently these two methods are implemented for only DDMA */ 
 uint8_t a10_get_dma_channel(void *fp(bus_space_tag_t, bus_space_handle_t, uint8_t)) ; 
@@ -123,6 +128,9 @@ static int a10_dma_attach(device_t dev)
 	a10_dma_cnt = malloc(sizeof(struct a10_dma_controller), M_DMA_CONT, M_ZERO | M_WAITOK ) ; 
 	a10_dma_cnt->sc = sc ;  
 
+	DMA_WRITE(a10_dma_cnt->sc, DMA_IRQ_EN_REG, 0) ;
+	DMA_WRITE(a10_dma_cnt->sc, DMA_IRQ_PEND_STA_REG, ~0) ;
+
 	return (0) ; 
 }  
 
@@ -150,11 +158,16 @@ static void a10_dma_release_resources(device_t dev)
 	free(a10_dma_cnt, M_DMA_CONT) ; 
 }
 
-/* Not implemented yet. */ 
 static void a10_dma_intr(void* ptr)
 {
-	//struct a10_dma_softc* sc = (struct a10_dma_softc*) ptr ; 
-	return  ; 
+	struct a10_dma_softc* sc = (struct a10_dma_softc*) ptr ;
+
+	uint32_t sta = DMA_READ(DMA_IRQ_PEND_STA_REG) ;
+
+	if(!sta)
+		return ;
+	device_printf(sc->a10_dma_dev, "Inside interrupt handler of dma") ;
+	return  ;
 }
 
 uint8_t a10_get_dma_channel(void *auto_config(bus_space_tag_t, bus_space_handle_t, uint8_t))
@@ -189,6 +202,23 @@ void a10_free_dma_channel(uint8_t pos, void* auto_config(bus_space_tag_t, bus_sp
 	a10_dma_cnt->ddma_channels[pos].in_use = 0 ; 
 	a10_dma_cnt->nddma_channels_in_use-- ; 
 	device_printf(a10_dma_cnt->sc->a10_dma_dev, "Freed DDMA Channel no %u\n", pos) ; 
+}
+
+void a10_dma_set_config(uint8_t type, uint8_t ch_no, uint32_t cfg)
+{
+	/* Normal DMA type */
+	if(type == 0)
+		DMA_WRITE(a10_dma_cnt->sc, NDMA_CFG_REG(ch_no), cfg);
+	else
+		DMA_WRITE(a10_dma_cnt->sc, DDMA_CFG_REG(ch_no), cfg) ;
+}
+
+uint32_t a10_dma_get_config(uint8_t type, uint8_t ch_no)
+{
+	if(type == 0)
+		return DMA_READ(a10_dma_cnt->sc, NDMA_CFG_REG(ch_no)) ;
+	else
+		return DMA_READ(a10_dma_cnt->sc, DDMA_CFG_REG(ch_no)) ;
 }
 
 static device_method_t a10_dma_methods[] = { 
