@@ -162,7 +162,7 @@ static void a10_dma_intr(void* ptr)
 {
 	struct a10_dma_softc* sc = (struct a10_dma_softc*) ptr ;
 
-	uint32_t sta = DMA_READ(DMA_IRQ_PEND_STA_REG) ;
+	uint32_t sta = DMA_READ(sc, DMA_IRQ_PEND_STA_REG) ;
 
 	if(!sta)
 		return ;

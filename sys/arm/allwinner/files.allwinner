@@ -8,6 +8,7 @@ arm/arm/bus_space_generic.c		standard
 arm/allwinner/a10_clk.c			standard
 arm/allwinner/a10_common.c		standard
 arm/allwinner/a10_dma.c			optional	dma
+arm/allwinner/a10_mmc.c			optional 	mmc 
 arm/allwinner/a10_ehci.c		optional	ehci
 arm/allwinner/a10_gpio.c		optional	gpio
 arm/allwinner/a10_machdep.c		standard

@@ -57,6 +57,10 @@
 			status = "okay";
 		};
 
+		mmc0:mmc@01c0f000 {
+			status = "okay" ;
+		};
+
 		dma@01c02000 { 
 			status = "okay" ; 
 		} ; 
